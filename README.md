@@ -1,4 +1,5 @@
 Done all in Ruby, the cutest language.
+
 | Days | Part 1 | Part 2 |
 | ---- |:------:|:------:|
 |  1   |   ✓    |   ✓    |
