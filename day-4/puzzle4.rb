@@ -1,4 +1,4 @@
-range = File.open('input.txt').read.split("-").map {|r| r.to_s.strip}
+range = File.open('input.txt').read.split("-").map {|r| r.strip}
 
 def testRange(start, finish)
   total = 0
