@@ -1,6 +1,6 @@
-inp = File.open('input.txt').read.split(',').map { |i| i.to_i }
+inp_init = File.open('input.txt').read.split(',').map { |i| i.to_i }
 
-def handle_opcode(inp, p)
+def handle_opcode(inp, p, testCode)
   params = {1 => 3, 2 => 3, 3 => 1, 4 => 1, 5 => 2, 6 => 2, 7 => 3, 8 => 3}
   params.default = 0
 
@@ -32,9 +32,9 @@ def handle_opcode(inp, p)
   when 2
     inp[modes[2]] = modes[0] * modes[1]
   when 3
-    inp[modes[0]] = 5
+    inp[modes[0]] = testCode
   when 4
-    puts 'MESSAGE ' + modes[0].to_s
+    puts modes[0]
   when 5
     return modes[1] if modes[0] != 0
   when 6
@@ -50,7 +50,15 @@ def handle_opcode(inp, p)
   return p + 1 + modes.length
 end
 
-i = 0
-while i <= inp.length
-  i = handle_opcode(inp, i)
+def runInput(inp_init, testCode)
+  inp = inp_init.dup
+  i = 0
+  while i <= inp.length
+    i = handle_opcode(inp, i, testCode)
+  end
 end
+
+puts "Part 1"
+runInput(inp_init, 1)
+puts "Part 2"
+runInput(inp_init, 5)
