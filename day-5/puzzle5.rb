@@ -4,6 +4,7 @@ def handle_opcode(inp, p)
   params = {1 => 3, 2 => 3, 3 => 1, 4 => 1, 5 => 2, 6 => 2, 7 => 3, 8 => 3}
   params.default = 0
 
+  # spaghetti to parse parameters
   inst = inp[p].dup % 100
   inst2 = inp[p].dup / 100
   modes = []
@@ -12,6 +13,7 @@ def handle_opcode(inp, p)
     inst2 = inst2 / 10
   end
 
+  # those that always give an address
   if [1, 2, 7, 8].include? inst
     specpar = 3
   elsif [3].include? inst
