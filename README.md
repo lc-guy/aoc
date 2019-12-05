@@ -6,7 +6,7 @@ Done all in Ruby, the cutest language.
 |  2   |   ✓    |   ✓    |
 |  3   |   ✓    |   ✓    |
 |  4   |   ✓    |   ✓    |
-|  5   |        |        |
+|  5   |   ✓    |   ✓    |
 |  6   |        |        |
 |  7   |        |        |
 |  8   |        |        |
