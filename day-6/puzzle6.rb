@@ -44,11 +44,11 @@ def orbits(tree)
 end
 
 def transfers(tree)
+  return 1 if (tree.has_key?("SAN") || tree.has_key?("YOU"))
   a = search(tree, "YOU")
   b = search(tree, "SAN")
-  return 0 if !a && !b
-  if (tree.keys.include?("SAN") || tree.keys.include?("YOU"))
-    return 1
+  if !a && !b
+    return 0
   else
     return (a && b ? 0 : 1) + tree.values.inject(0) { |tot, leaf| tot + transfers(leaf) }
   end
