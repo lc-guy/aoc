@@ -1,4 +1,4 @@
-inp_init = File.open('input.txt').read.lines.each.map { |line| line.chomp.split(')') }
+inp_init = File.open('input.txt').read.each_line.map { |line| line.chomp.split(')') }
 
 def insert(tree, n, content)
   tree[n] = (content.nil? ? {} : content)
@@ -6,7 +6,7 @@ end
 
 def search(tree, n)
   return nil if tree.empty?
-  return tree[n] if tree.keys.include? n
+  return tree[n] if tree.has_key? n
   return tree.values.map { |leaf| search(leaf, n) }.find { |leaf| !leaf.nil? }
 end
 
@@ -15,7 +15,7 @@ def parse(lines)
   insert(tree, "COM", nil)
   lines.each do |orbited, orbiter|
     a = search(tree, orbited)
-    b = search(tree, orbiter)
+    b = tree[orbiter]
 
     tree.delete(orbiter) if !b.nil?
     if a.nil?
@@ -28,26 +28,26 @@ def parse(lines)
   return tree
 end
 
-def height(tree)
-  return 0 if tree.keys.empty? 
-  return tree.keys.length + tree.values.inject(0) { |tot, leaf| tot + height(leaf) }
-end
-
 def orbits(tree)
-  def orbits_iter(tree)
-    return 0 if tree.empty?
-    return height(tree) + tree.values.inject(0) { |tot, leaf| tot + orbits_iter(leaf) }
+  def height(tree, key, heights)
+    return 0 if tree.empty? 
+    return heights[key] if heights.has_key? key
+    return heights[key] = tree.keys.length + tree.inject(0) { |tot, (key, leaf)| tot + height(leaf, key, heights) }
   end
 
-  return orbits_iter(tree["COM"])
+  def orbits_iter(tree, key, heights)
+    return 0 if tree.empty?
+    return height(tree, key, heights) + tree.inject(0) { |tot, (key, leaf)| tot + orbits_iter(leaf, key, heights) }
+  end
+
+  return orbits_iter(tree["COM"], "COM", {})
 end
 
 def transfers(tree)
   a = search(tree, "YOU")
   b = search(tree, "SAN")
   return 0 if !a && !b
-  k = tree.keys
-  if (k.include?("SAN") || k.include?("YOU"))
+  if (tree.keys.include?("SAN") || tree.keys.include?("YOU"))
     return 1
   else
     return (a && b ? 0 : 1) + tree.values.inject(0) { |tot, leaf| tot + transfers(leaf) }
