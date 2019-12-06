@@ -1,3 +1,6 @@
+# did it with a tree without realizing it's basically a linked list
+# still, it works
+
 inp_init = File.open('input.txt').read.each_line.map { |line| line.chomp.split(')') }
 
 def insert(tree, n, content)
