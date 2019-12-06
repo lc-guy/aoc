@@ -6,29 +6,28 @@ end
 
 def search(tree, n)
   return nil if tree.empty?
-  return tree[n] if tree.keys.include? n
+  return tree if tree.keys.include? n
   return tree.values.map { |leaf| search(leaf, n) }.find { |leaf| !leaf.nil? }
-end
-
-def clean_up(tree, n)
-  return if tree.empty?
-  tree.delete(n) if tree.keys.include? n
-  tree.values.each { |leaf| clean_up(leaf, n) }
 end
 
 def parse(lines)
   tree = {}
   insert(tree, "COM", nil)
-  lines.each do |line|
-    a = search(tree, line[0])
-    b = search(tree, line[1])
+  lines.each do |(orbiter, orbited)|
+    a = search(tree, orbiter)
+    b = search(tree, orbited)
+    orbited_contents = nil
 
-    clean_up(tree, line[1]) if !b.nil?
+    if !b.nil?
+      orbited_contents = b[orbited]
+      b.delete(orbited)
+    end
+
     if a.nil?
-      insert(tree, line[0], nil)
-      insert(tree[line[0]], line[1], b)
+      insert(tree, orbiter, nil)
+      insert(tree[orbiter], orbited, orbited_contents)
     else
-      insert(a, line[1], b)
+      insert(a[orbiter], orbited, orbited_contents)
     end
   end 
   return tree
