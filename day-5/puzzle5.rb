@@ -35,7 +35,7 @@ def handle_opcode(inp, p, testCode)
     inp[modes[0]] = testCode
   when 4
     # print modes[0] for the quine
-    puts modes[0]
+    print modes[0]
   when 5
     return modes[1] if modes[0] != 0
   when 6
