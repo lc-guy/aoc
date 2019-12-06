@@ -1,7 +1,7 @@
 inp_init = File.open('input.txt').read.split(',').map { |i| i.to_i }
 
 def handle_opcode(inp, p, testCode)
-  params = {1 => 3, 2 => 3, 3 => 1, 4 => 1, 5 => 2, 6 => 2, 7 => 3, 8 => 3}
+  params = {1 => 3, 2 => 3, 3 => 1, 4 => 1, 5 => 2, 6 => 2, 7 => 3, 8 => 3, 9 => 1}
   params.default = 0
 
   # spaghetti to parse parameters
@@ -34,6 +34,7 @@ def handle_opcode(inp, p, testCode)
   when 3
     inp[modes[0]] = testCode
   when 4
+    # print modes[0] for the quine
     puts modes[0]
   when 5
     return modes[1] if modes[0] != 0
@@ -43,6 +44,8 @@ def handle_opcode(inp, p, testCode)
     inp[modes[2]] = (modes[0] < modes[1] ? 1 : 0)
   when 8
     inp[modes[2]] = (modes[0] == modes[1] ? 1 : 0)
+  when 9 # for the bonus!
+    print modes[0].chr
   else
     return inp.length + 1
   end
