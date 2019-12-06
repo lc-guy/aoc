@@ -1,4 +1,4 @@
-inp_init = File.open('input.txt').read.split(',').map { |i| i.to_i }
+inp_init = File.open('mystery.txt').read.split(',').map { |i| i.to_i }
 
 def handle_opcode(inp, p, testCode)
   params = {1 => 3, 2 => 3, 3 => 1, 4 => 1, 5 => 2, 6 => 2, 7 => 3, 8 => 3, 9 => 1}
@@ -35,7 +35,8 @@ def handle_opcode(inp, p, testCode)
     inp[modes[0]] = testCode
   when 4
     # print modes[0] for the quine
-    print modes[0]
+    # puts modes[0] for the regular challenge
+    puts modes[0]
   when 5
     return modes[1] if modes[0] != 0
   when 6
