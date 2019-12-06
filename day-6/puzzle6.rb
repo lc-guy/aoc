@@ -36,7 +36,6 @@ def orbits(tree)
   end
 
   def orbits_iter(tree, key, heights, cum_heights) # total orbits for given node
-    sleep 0.1
     return 0 if tree.empty?
     return cum_heights[key] if cum_heights.has_key? key
     return cum_heights[key] = height(tree, key, heights) + tree.inject(0) { |tot, (key, leaf)| tot + orbits_iter(leaf, key, heights, cum_heights) }
