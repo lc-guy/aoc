@@ -29,13 +29,13 @@ def parse(lines)
 end
 
 def orbits(tree)
-  def height(tree, key, heights) # number of children for given node
+  def height(tree, key, heights) # number of orbiters for given node
     return 0 if tree.empty? 
     return heights[key] if heights.has_key? key
     return heights[key] = tree.keys.length + tree.inject(0) { |tot, (key, leaf)| tot + height(leaf, key, heights) }
   end
 
-  def orbits_iter(tree, key, heights, cum_heights) # total orbits for given node
+  def orbits_iter(tree, key, heights, cum_heights) # total orbiters for tree
     return 0 if tree.empty?
     return cum_heights[key] if cum_heights.has_key? key
     return cum_heights[key] = height(tree, key, heights) + tree.inject(0) { |tot, (key, leaf)| tot + orbits_iter(leaf, key, heights, cum_heights) }
