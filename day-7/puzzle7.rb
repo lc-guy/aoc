@@ -22,7 +22,7 @@ def handle_opcode(inp, p, input_data, signal)
     specpar = -1
   end
 
-  modes = modes.each.with_index(1).map do |par, ind|
+  modes = modes.each.with_index(1).map do |par, ind| # sub in for address/value
     (par == 1 || (ind == specpar)) ? inp[p+ind] : inp[inp[p+ind]]
   end
 
@@ -53,9 +53,9 @@ end
 
 def runInput(inp_init, amp_values)
   biggest = 0
-  amp_values.to_a.permutation(5).each do |perm|
-    inps = perm.map {|run| [run, inp_init.dup] }.to_h
-    points = perm.map {|run| [run, 0] }.to_h
+  amp_values.permutation(amp_values.length).each do |perm|
+    inps = perm.map {|run| [run, inp_init.dup] }.to_h # hash of amps' tables
+    points = perm.map {|run| [run, 0] }.to_h # same but for pointers
     output, signal = 0, 0
     run = perm[0]
     init_sig = perm.dup
