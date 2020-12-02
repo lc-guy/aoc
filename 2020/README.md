@@ -5,7 +5,7 @@ Almost never did Hasklel, should be fun
 | Days | Part 1 | Part 2 |
 | ---- |:------:|:------:|
 |  1   |   ✓    |   ✓    |
-|  2   |        |        |
+|  2   |   ✓    |   ✓    |
 |  3   |        |        |
 |  4   |        |        |
 |  5   |        |        |
