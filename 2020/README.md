@@ -2,12 +2,14 @@ AWW YEAAAAAAAAH HASKELL BAYBEEEEEEE
 
 Almost never did Hasklel, should be fun
 
+Day 4 edit: Nevermind, ended up switching to ruby for most lol
+
 | Days | Part 1 | Part 2 |
 | ---- |:------:|:------:|
 |  1   |   ✓    |   ✓    |
 |  2   |   ✓    |   ✓    |
-|  3   |        |        |
-|  4   |        |        |
+|  3   |   ✓    |   ✓    |
+|  4   |   ✓    |   ✓    |
 |  5   |        |        |
 |  6   |        |        |
 |  7   |        |        |
