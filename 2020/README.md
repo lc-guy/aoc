@@ -11,7 +11,7 @@ Day 4 edit: Nevermind, ended up switching to ruby for most lol
 |  3   |   ✓    |   ✓    |
 |  4   |   ✓    |   ✓    |
 |  5   |   ✓    |   ✓    |
-|  6   |        |        |
+|  6   |   ✓    |   ✓    |
 |  7   |        |        |
 |  8   |        |        |
 |  9   |        |        |
