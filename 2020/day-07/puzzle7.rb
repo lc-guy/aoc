@@ -2,7 +2,7 @@ inp = File.read("input.txt")
 
 def get_rules(line)
   head, content = line.split(" bags contain ")
-  return {head => nil} if content =~ /no other bags/
+  return {head => []} if content =~ /no other bags/
   content = content.split(", ")
   content = content.map do |type| 
     type = type.split(" ", 2)
@@ -14,34 +14,20 @@ def get_rules(line)
 end
 
 def expand(bag, parent_store)
-  if parent_store[bag].empty?
-    return [bag]
-  else
-    return [bag] + parent_store[bag].map {expand(_1, parent_store)}.flatten.uniq
-  end
+  return parent_store[bag] + parent_store[bag].map {expand(_1, parent_store)}.flatten.uniq
 end
 
 def get_bag_value(bag, store)
-  if store[bag].nil? 
-    return 1
-  else
-    return 1 + store[bag].sum { |m, b| m*get_bag_value(b, store) }
-  end
+  return 1 + store[bag].sum { |m, b| m*get_bag_value(b, store) }
 end
 
 store = {}
 parent_store = Hash.new { |h, k| h[k] = [] }
 
-inp.each_line do |line|
-  store = store.merge(get_rules(line.chomp))
-end
-
+inp.each_line { |line| store = store.merge(get_rules(line.chomp)) }
 store.keys.each do |bagtype|
-  next if store[bagtype].nil?
-  store[bagtype].each do |_, child|
-    parent_store[child] << bagtype
-  end
+  store[bagtype].each { |_, child| parent_store[child] << bagtype }
 end
 
-puts "part 1: #{expand("shiny gold", parent_store).size - 1}" # exclude our bag
-puts "part 2: #{get_bag_value("shiny gold", store) - 1}" # same
+puts "part 1: #{expand("shiny gold", parent_store).size}"
+puts "part 2: #{get_bag_value("shiny gold", store) - 1}" # exclude our bag
