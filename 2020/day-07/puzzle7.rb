@@ -13,11 +13,11 @@ def get_rules(line)
   return {head => content}
 end
 
-def expand(bag, store)
-  if store[bag].nil? || bag == "shiny gold"
+def expand(bag, parent_store)
+  if parent_store[bag].empty?
     return [bag]
   else
-    return store[bag].map {|v| expand(v[1], store)}.flatten(1).uniq
+    return [bag] + parent_store[bag].map {expand(_1, parent_store)}.flatten.uniq
   end
 end
 
@@ -25,19 +25,22 @@ def get_bag_value(bag, store)
   if store[bag].nil? 
     return 1
   else
-    return 1 + store[bag].sum { |b| b[0]*get_bag_value(b[1], store) }
+    return 1 + store[bag].sum { |m, b| m*get_bag_value(b, store) }
   end
 end
 
 store = {}
-expanded = {}
+parent_store = Hash.new { |h, k| h[k] = [] }
+
 inp.each_line do |line|
   store = store.merge(get_rules(line.chomp))
 end
 store.keys.each do |bagtype|
-  next if bagtype == "shiny gold"
-  expanded[bagtype] = expand(bagtype, store)
+  next if store[bagtype].nil?
+  store[bagtype].each do |_, child|
+    parent_store[child] << bagtype
+  end
 end
 
-puts "part 1: #{expanded.keys.select {|b| expanded[b].include? "shiny gold"}.size}"
-puts "part 2: #{get_bag_value("shiny gold", store) - 1}"
+puts "part 1: #{expand("shiny gold", parent_store).size - 1}" # exclude our bag
+puts "part 2: #{get_bag_value("shiny gold", store) - 1}" # same
