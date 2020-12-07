@@ -1,4 +1,3 @@
-
 def get_rules(line, store)
   head, content = line.split(" bags contain ")
   return store[head] = [] if content =~ /no other bags/
@@ -13,14 +12,12 @@ def get_rules(line, store)
 end
 
 def expand(bag, parent_store, visited)
-  return parent_store[bag] + parent_store[bag].filter_map do |el|
-    if visited[el]
-      false
-    else
+  parent_store[bag].each do |el|
+    if !visited[el]
       visited[el] = true
       expand(el, parent_store, visited)
     end
-  end.flatten.uniq
+  end
 end
 
 def get_bag_value(bag, store, cache_store)
@@ -47,7 +44,8 @@ step = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 puts "parsing: #{step - start} s"
 
 start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-puts "part 1: #{expand("shiny gold", parent_store, visited).size}"
+expand("shiny gold", parent_store, visited)
+puts "part 1: #{visited.keys.size}"
 step = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 puts "done in: #{step - start} s"
 
