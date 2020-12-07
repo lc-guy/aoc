@@ -35,6 +35,7 @@ parent_store = Hash.new { |h, k| h[k] = [] }
 inp.each_line do |line|
   store = store.merge(get_rules(line.chomp))
 end
+
 store.keys.each do |bagtype|
   next if store[bagtype].nil?
   store[bagtype].each do |_, child|
