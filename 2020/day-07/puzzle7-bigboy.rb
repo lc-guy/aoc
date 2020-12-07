@@ -41,7 +41,7 @@ visited = {}
 start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 File.readlines('bigboy.txt').each { |line| get_rules(line.chomp, store) }
 store.keys.each do |bagtype|
-  store[bagtype].each { |_, child| p bagtype if child == "irvjsmngpibnpuhdg"; parent_store[child] << bagtype }
+  store[bagtype].each { |_, child| parent_store[child] << bagtype }
 end
 step = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 puts "parsing: #{step - start} s"
