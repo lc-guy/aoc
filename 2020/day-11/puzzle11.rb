@@ -1,4 +1,5 @@
 require 'matrix'
+
 inp = {}
 File.readlines("input.txt", chomp: true).each.with_index do |line, i|
   line.chars.each.with_index do |c, j|
@@ -36,6 +37,7 @@ def run(grid, f)
 
     grid == new ? break : grid = new
   end
+
   return grid.values.count(:occupied)
 end
 
