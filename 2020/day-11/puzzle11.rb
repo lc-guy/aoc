@@ -25,17 +25,17 @@ loop do
 end
 puts map.values.count(:occupied)
 
+def lineofsight(map, dir, pos)
+  index = [pos[0] + dir[0], pos[1] + dir[1]]
+  index = [index[0] + dir[0], index[1] + dir[1]] while map[index] == :floor
+  return map[index] == :occupied
+end
+
+dirs = getSurrounding(0, 0) - [[0, 0]]
 map = inp.clone
 loop do
   new = map.map { |pos, s|
-    surround = (getSurrounding(0, 0) - [[0, 0]]).count do |dir|
-      index = [pos[0] + dir[0], pos[1] + dir[1]]
-      while map[index] == :floor do
-        index = [index[0] + dir[0], index[1] + dir[1]]
-      end
-      map[index] == :occupied
-    end
-
+    surround = dirs.count { lineofsight(map, _1, pos) }
     if (s == :empty && surround == 0) then
       [pos, :occupied]
     elsif (s == :occupied && surround > 4) then
