@@ -1,3 +1,4 @@
+require 'matrix'
 inp = {}
 File.readlines("input.txt", chomp: true).each.with_index do |line, i|
   line.chars.each.with_index do |c, j|
@@ -5,46 +6,38 @@ File.readlines("input.txt", chomp: true).each.with_index do |line, i|
   end
 end
 
-def getSurrounding(x, y)
-  return [x-1, x, x+1].product [y-1, y, y+1]
+def add(v1, v2)
+  return [v1[0] + v2[0], v1[1] + v2[1]]
 end
 
-map = inp.clone
-loop do
-  new = map.map { |pos, s|
-    surround = getSurrounding(*pos).count {map[_1] == :occupied }
-    if (s == :empty && surround == 0) then
-      [pos, :occupied]
-    elsif (s == :occupied && surround > 4) then
-      [pos, :empty]
-    else [pos, s]
+surround_part1 = Proc.new do |grid, dir, pos|
+  next grid[add(dir, pos)] == :occupied
+end
+
+surround_part2 = Proc.new do |grid, dir, pos|
+  next false if dir == [0, 0]
+  begin pos = add(dir, pos) end while grid[pos] == :floor
+  next grid[pos] == :occupied
+end
+
+def run(grid, f)
+  dirs = [-1, 0, 1].product([-1, 0, 1])
+
+  loop do # no recursion, don't wanna get a memory leak...
+    new = grid.clone
+    new.keys.each do |pos|
+      surround = dirs.count { f.call(grid, _1, pos) }
+      if (new[pos] == :empty && surround == 0) then
+        new[pos] = :occupied
+      elsif (new[pos] == :occupied && surround > 4) then
+        new[pos] = :empty
+      end
     end
-  }.to_h
-  break if new == map
-  map = new
-end
-puts map.values.count(:occupied)
 
-def lineofsight(map, dir, pos)
-  index = [pos[0] + dir[0], pos[1] + dir[1]]
-  index = [index[0] + dir[0], index[1] + dir[1]] while map[index] == :floor
-  return map[index] == :occupied
+    grid == new ? break : grid = new
+  end
+  return grid.values.count(:occupied)
 end
 
-dirs = getSurrounding(0, 0) - [[0, 0]]
-map = inp.clone
-loop do
-  new = map.map { |pos, s|
-    surround = dirs.count { lineofsight(map, _1, pos) }
-    if (s == :empty && surround == 0) then
-      [pos, :occupied]
-    elsif (s == :occupied && surround > 4) then
-      [pos, :empty]
-    else [pos, s]
-    end
-  }.to_h
-
-  break if new == map
-  map = new
-end
-puts map.values.count(:occupied)
+puts "Part 1: #{run(inp.clone, surround_part1)}"
+puts "Part 2: #{run(inp.clone, surround_part2)}"
